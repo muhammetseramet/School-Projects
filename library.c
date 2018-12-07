@@ -89,7 +89,7 @@ void print() {
     while (temp != NULL) {
 
         if (temp->status == 1)
-            fprintf(stdout,"\t%s  \"%s\"\n", temp->name, temp->script);
+            fprintf(stdout,"\t%s  %s\n", temp->name, temp->script);
 
         temp = temp->next;
     }
@@ -631,18 +631,22 @@ char *find_command(char *args[], int counter){
                             number++;
                             if (number == 2){
                                 last = j;
-                                /*
-                                char *buf = "";
-                                for (int m = start; m <= last; m++) {
-                                    fprintf(stdout, "string :%s\n",args[m]);
-                                    //fprintf(stdout, "EX: %s\n", buf);
-                                }*/
-
                                 // BURADADAN DEVAM ET
                                 // ARGS DAN TEK SATIRDA OKUMA...
+                                const char *arr[counter];
+                                for (int p = 0; p < counter; p++)
+                                    arr[p] = strdup(args[p]);
 
+                                char buffer[128];
+                                const char *sep = " ";
+                                strcpy(buffer, arr[1]);
+                                for (int z = 2; z < last; z++) {
+                                    strcat(buffer, sep);
+                                    strcat(buffer, arr[z]);
+                                }
+                                char *ret = buffer;
 
-                                return NULL;
+                                return ret;
                             }
                         }
                     }

@@ -7,7 +7,6 @@
 #include <signal.h>
 #include <stdarg.h>
 #include <fcntl.h>
-#include <bits/types/siginfo_t.h>
 
 #define MAX_LINE 80 /* 80 chars per line, per command, should be enough. */
 
@@ -125,10 +124,9 @@ char* findInputFile(char *args[], int counter){
 
 void setArrowToNull(char *args[], int counter){
 
-
     for(int i=0; i < counter; i++) {
-
-        if(strcmp(args[i], "<") == 0){
+        char *temp = strdup(args[i]);
+        if(strncmp(temp, "<", 128) == 0){
             args[i] = NULL;
             args[i + 1] = NULL;
             /* if(strcmp(args[i+2], ">") == 0){      // bu if olmadan çalışıyor inputtan alıp direkt ekrana basma işlemi.
@@ -138,22 +136,26 @@ void setArrowToNull(char *args[], int counter){
 
             return;
 
-        }else if (strcmp(args[i], ">>") == 0) {
+        }else if (strncmp(temp, ">>", 128) == 0) {
             args[i] = NULL;
             args[i + 1] = NULL;
             return;
 
-        }else if (strcmp(args[i], ">") == 0) {
+        }else if (strncmp(temp, ">", 128) == 0) {
             args[i] = NULL;
             args[i + 1] = NULL;
             return;
-        }else if(strcmp(args[i], "2>")==0){
+        }else if(strncmp(temp, "2>", 128)==0){
             args[i] = NULL;
             args[i + 1] = NULL;
             return;
 
         }
 
+    }
+
+    for (int j = 0; j < counter; ++j) {
+        fprintf(stdout, "args%d :%s\n", j, args[j]);
     }
 
 
@@ -392,6 +394,7 @@ void delete_j(pid_t pid){
     struct job_t *temp = search_j(pid);
 
     if(temp){
+        temp->state = ST;
         temp->is_active = 0;
         return;
     }
@@ -512,28 +515,6 @@ void setAmpersandToNull(char *args[], int counter){
         }
     }
 }
-
-
-/*void handle_signal(int signal, siginfo_t *siginfo, void* uncontext_txt) {
-
-    // Find out which signal we're handling
-    switch (signal) {
-        case SIGTSTP:
-            //fprintf(stdout, "%ld\n",);;
-            fprintf(stdout, "%ld\n", (long)getpid());
-            //kill(tcgetpgrp((int)getpid()), signal);
-            //pid_t foregroundpgid=tcgetpgrp(0);
-            //printf("%ld\n", (long) foregroundpgid);
-            //printf("Caught SIGTSTP now stop.%ld\n", (long)getpid());
-            break;
-        case SIGINT:
-            printf("Caught SIGINT, exiting now\n");
-            exit(0);
-        default:
-            fprintf(stderr, "Caught wrong signal: %d\n", signal);
-            return;
-    }
-}*/
 
 /*
 void scriptToArgs(char *args[], char *string, int counter){
@@ -711,7 +692,6 @@ int main(void) {
     // bu counter arg sayısını sayıyor
     // setup fonksiyonuna gönderiyom
     int counter;
-
     insert_j(getpid(), "myshell", UNDEF);
 
     while (1) {
@@ -831,6 +811,7 @@ int main(void) {
             while (temp){
 
                 if(!temp->is_active){
+                    temp->state = ST;
                     temp = temp->next;
                     continue;
                 }
@@ -858,8 +839,6 @@ int main(void) {
                     temp->state = FG;
                     waitpid(pid, 0, WUNTRACED);
                 }
-
-
                 temp = temp->next;
             }
             // if BG THEN TO FG
@@ -911,9 +890,21 @@ int main(void) {
                     close(output);
                     close(input);
                 }
-
-                splitter(args);
+                else if(redirect == 0){
+                    splitter(args);
+                    exit(0);
+                }
+                /*for (int i = 0; i < counter; i++) {
+                    fprintf(stdout, "args [%d] is %s\n", i, args[i]);
+                }*/
+                char *arr[counter];
+                for(int p=0; p < counter; p++) {
+                    arr[p] = strdup(args[p]);
+                }
+                setArrowToNull(arr, counter);
+                splitter(arr);
                 exit(0);
+                //setArrowToNull(args, counter);
             }
             else if (childpid < 0){
                 fprintf(stderr, "A signal must have interrupted the wait!\n");
@@ -931,10 +922,9 @@ int main(void) {
                 sinyal için kullanıyoz. */
                 struct sigaction sa;
                 if (background) {
-
                     /*SIGTSTP -> ctrl+z
                     SIG_IGN -> signal ignore demek.. yani ctrl+z yi görmezden gel dioz.. */
-                    setpgid(childpid,childpid);
+                    //setpgid(childpid,childpid);
                     signal(SIGTSTP, SIG_IGN);
                     const char *buf = args[0];
                     char *command = strdup(buf);

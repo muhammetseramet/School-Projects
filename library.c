@@ -7,6 +7,7 @@
 #include <signal.h>
 #include <stdarg.h>
 #include <fcntl.h>
+#include <bits/types/siginfo_t.h>
 
 #define MAX_LINE 80 /* 80 chars per line, per command, should be enough. */
 
@@ -462,22 +463,18 @@ int is_there_any_BG_process(){
 
     while (temp){
 
-        if(temp->state == BG){
-            fprintf(stderr, "There is a background process. You can't exit now..\n");
-            return 1;
+        if(temp->pid > 0){
+            if(temp->state == BG){
+                fprintf(stdout, "DEGER : %ld\n", (long) temp->pid);
+                fprintf(stderr, "There is a background process. You can't exit now..\n");
+                return 1;
+            }
         }
-
         temp = temp->next;
     }
 
-
     return 0;
 }
-
-void execute_fg(){
-}
-
-
 
 // bu signal handler
 // burada eksiklik var tamamlayınca anlatcam..
@@ -678,6 +675,33 @@ char *find_command(char *args[], int counter){
     return NULL;
 }
 
+// bu fonksiyon FG yzıldığında o anda çalışan foreground processin pid
+// bulmak için..
+pid_t found_pid(struct job_t *jobs) {
+
+    while (jobs){
+
+        if(jobs->state == FG)
+            return jobs->pid;
+
+        jobs = jobs->next;
+    }
+
+    return 0;
+}
+// BUDA SIGNAL HANDLER GELINCE KAFASINI KOPARIYOZ..
+void sigtstp_handler(int sig)
+{
+    int pid = found_pid(main_j);
+
+    if (pid != 0) {
+
+        printf("Job (%d) Stopped by signal %d Ctrl+Z\n", pid, sig);
+        kill(pid, SIGKILL);
+    }
+    return;
+}
+
 
 int main(void) {
     char inputBuffer[MAX_LINE]; /*buffer to hold command entered */
@@ -792,7 +816,7 @@ int main(void) {
             //fprintf(stdout, "%s\n", run->script);
 
         }
-        else if (strncmp(args[0], "fg", 127) == 0){
+        else if ((strncmp(args[0], "fg", 127) == 0) && (!args[1])){
             /* ne yapıyordu?
 
             şimdi bir fonksiyona göndercek
@@ -802,27 +826,43 @@ int main(void) {
             kill fonksiyonu ile fonksiyonları çalıştırcak
             waitpid */
 
+
             struct job_t *temp = main_j;
-            fprintf(stdout, "buradayım %s \n", temp->cmdline);
-            // if BG THEN TO FG
-            while (temp->state != UNDEF){
-                fprintf(stdout, "temp : %s", temp->cmdline);
+            while (temp){
 
-                if((temp->pid > 0) && temp->is_active){
+                if(!temp->is_active){
+                    temp = temp->next;
+                    continue;
+                }
 
-                    if(temp->state == BG){
+                pid_t pid = fork();
 
-                        temp->state == FG;
-                        int count = string_parser(temp->cmdline);
-
-                        create_new_args(temp->cmdline, count);
-                    }
+                if (pid == -1) {
+                    perror("Failed to fork");
+                    return 1;
+                }
+                if(pid == 0){
+                    args[1] = "1";
+                    splitter(args);
+                    exit(0);
+                    /*char buf[50];
+                    args[1] += snprintf(args[1], "%ld", temp->pid);
+                    splitter(args);*/
+                }
+                else if (pid < 0){
+                    fprintf(stderr, "A signal must have interrupted the wait!\n");
                 }
                 else{
-                    //process is terminated..
+                    temp->pid = -1;
                     temp->is_active = 0;
+                    temp->state = FG;
+                    waitpid(pid, 0, WUNTRACED);
                 }
+
+
+                temp = temp->next;
             }
+            // if BG THEN TO FG
 
         }
         else{
@@ -903,9 +943,7 @@ int main(void) {
                 else{
                     // bunlar foreground processteki ctrl+z sinyali handle etmek için
                     // BURAYA YAZCAN SIGNALİ daha tamamlanmadı burası..
-
-                    //signal(SIGTSTP, sighandler);
-
+                    signal(SIGTSTP, sigtstp_handler);
 
 
                     // foreground işleminin bitmesi için bekle...
@@ -915,9 +953,10 @@ int main(void) {
                     waitpid(childpid, 0, WUNTRACED);
                 }
                 fprintf(stdout, "PARENT ID: %ld with child id: %ld \n", (long) getpid(), childpid);
+                struct job_t *temp = search_j(childpid);
+                temp->state = ST;
                 print_j();
             }
         }
-        //burada sıfırla
     }
 }

@@ -15,36 +15,20 @@ in the next command line; separate it into distinct arguments (using blanks as
 delimiters), and set the args array entries to point to the beginning of what
 will become null-terminated, C-style strings. */
 
-// alias struct yapısı ve linked list için gerekli olan
-// yapılar..
-// burada hala eksilikler olabilir henüz test edemedim.
 struct alias {
-    /* bir örnek ile açıklayayım burayı..
-     *
-     * burada adam diyelim ki alias "ls -l" direct komutunu girdi
-     *
-     *  name -> direct dediğimiz yeri tutacak
-     *  script -> ls -l komutunu tutacak
-     *                  daha sonra bunu splitter fonksiyonu ile çalıştırcaz
-     *  status -> bu sadece o alias ın kullanılıp veyahut kullanılmadığını belirlemek için..
-     *             delete yapmamak için böyle bir yol buldum
-     *             status 1 ise bu alias hala kullanılıyordur
-     *             status 0 ise demekki kullanıcı unalias ile bunu bulup silmiş..
-     *  next -> linked list yapısı için..
-    */
-    char *name;
-    char *script;
-    int status;
-    struct alias *next;
+    char *name; /* The name of the alias */
+    char *script; /* The script that the alias will hold*/
+    int status; /* To check the alias status */
+    struct alias *next; /* Stack structure */
 };
 struct alias *root = NULL;
 
-// alias için search etcek varsa struct ı yoksa NULL döndürcek..
 struct alias *find(char *string) {
 
     struct alias *temp = root;
     while (temp != NULL) {
-
+        /* If the alias that we looking for is found
+         * and it is still active */
         if ((strncmp(temp->name, string, 127) == 0) && (temp->status == 1)){
             return temp;
         }
@@ -55,7 +39,7 @@ struct alias *find(char *string) {
     return NULL;
 }
 
-// alias için insert methodu
+/* Insert operation for STACK structure */
 void insert(char *name, char *bash) {
 
     struct alias *new_node = malloc(sizeof(struct alias));
@@ -63,13 +47,12 @@ void insert(char *name, char *bash) {
     new_node->name = name;
     new_node->script = bash;
     new_node->status = 1;
-    //fprintf(stdout, "new node %s NAME, %s BASH.\n", new_node->name, new_node->script);
     new_node->next = root;
 
     root = new_node;
 }
 
-// burasını unalias için kullancaz
+/* Unalias structure */
 void delete_node(char *string) {
 
     struct alias *node = find(string);
@@ -78,11 +61,11 @@ void delete_node(char *string) {
         fprintf(stderr, "Command :%s not found.\n", string);
         return;
     }
-
+    /* The alias will no longer be used */
     node->status = 0;
 }
 
-// bu aliasları yazdırmak için, alias -l inputunda run etcez..
+/* Print the alias structure */
 void print() {
 
     struct alias *temp = root;
@@ -161,11 +144,7 @@ void setArrowToNull(char *args[], int counter){
 
 }
 
-
-/* bu fonksiyon path bulmak için.
-mesela ls komutu /usr/bin dosyasının içinde
-bu fonksiyon o dosyayı bulup içindeki ls i execl komutuyla
-çaluştırıyor.. */
+/* General PATH finder and executer */
 void splitter(char *argv[]){
 
     const char *path = getenv("PATH");
@@ -175,6 +154,7 @@ void splitter(char *argv[]){
     int i;
     char *temp = strdup(path);
 
+    /* how many path exactly do we have */
     int number_of_path = 0;
     int len = strlen(temp);
     for (i = 0;  i<len ; i++) {
@@ -184,7 +164,7 @@ void splitter(char *argv[]){
             temp[i] = '\0';
         }
     }
-
+    /* To hold all possible PATH */
     const char **arr = malloc((number_of_path + 1) * sizeof(*arr));
     arr[0] = temp;
 
@@ -203,15 +183,18 @@ void splitter(char *argv[]){
     for (i = 0;  i<number_of_path+1 ; i++) {
         char buf[256];
         snprintf(buf, sizeof buf, "%s%s%s", arr[i], sep, argv[0]);
+        /* Find all PATH's with starting with arr and ends with argv[0] */
 
         if(access(buf, F_OK) == 0){
-            //fprintf(stdout, "buffer : %s\n", buf);
+            /* If the file exist in this path execute it*/
             execl(buf, argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7], argv[8], argv[9],
                   argv[9], argv[10], argv[11], argv[12], argv[13], argv[14], argv[15], argv[16], argv[17], argv[18],
                   argv[19], argv[20], argv[21], (char *)0);
         }
 
     }
+    /* Couldn't found any path to execute */
+    fprintf(stderr, "Command not found..\n");
     exit(errno);
 }
 
@@ -313,47 +296,24 @@ void setup(char inputBuffer[], char *args[], int *background, int *counter, int 
 
 } /* end of setup routine */
 
-
-// burada hiçbir şey yok lazım olur belki diye bıraktım..
 /*
-void execute(char *string[]){
-
-    // burada o stringi iyi split etmiş olması lazım.
-    struct alias *node = find(string[3]);
-
-    if(node == NULL){
-        splitter(string);
-        return;
-    }
-    splitter(string);
-} // burasi tamamen hayal ürünüdür. */
-
-/*
- * Buralar signal için gerekli
- * temel olarak oluşturulan processleri takip etmem lazım
- * bunun için yine bir linked list şeklinde processleri saklayabildiğim bir yapı
- * içeriği için struct a bak..
+ * Job structure to follow processes
  * */
-// job states
-#define UNDEF 0 // undefinded // BU MAIN PROCESS İÇİN..
-#define FG 1    // foreground // BU FOREGROUND PROCESSLER İÇİN
-#define BG 2    // background // BU BACKGROUND PROCESSLER İÇİN
-#define ST 3    // stopped    // BU DA DURDURULAN VEYA KAPATILAN PROCESSLER İÇİN
+#define UNDEF 0 // undefinded for Main Process
+#define FG 1    // foreground processes
+#define BG 2    // background processes
+#define ST 3    // stopped processes
 
 struct job_t {
-    pid_t pid;              // bu process id yi tutcak
-    //int jid;              /* bundan emin değilim
-    //                       * temel mantığı location tutmak
-    //                       */
-    int state;              /* Bunlar processlerin yukarıda tanımlağım state durumları
-                             * 4 DURUM VAR TOTALDE ONLARDA YUKARDA */
+    pid_t pid;              // process id
+    int state;              // state of the process
     int is_active;          // for deletion
-    char *cmdline;  /* command line */
-    struct job_t *next;
+    char *cmdline;          // command line
+    struct job_t *next;     // STACK structure
 };
 struct job_t *main_j = NULL; /* The job list */
 
-// process linked list yapısı için search methodu
+// search job structure
 struct job_t *search_j(pid_t pid){
 
     struct job_t *temp = main_j;
@@ -369,7 +329,7 @@ struct job_t *search_j(pid_t pid){
     return NULL;
 }
 
-// process LL yapısı için insert
+// insert to job structure
 void insert_j(pid_t pid, char *string, int state){
 
     struct job_t *node = search_j(pid);
@@ -388,7 +348,7 @@ void insert_j(pid_t pid, char *string, int state){
     main_j = node;
 }
 
-// process LL yapısı için delete
+// deletion for job
 void delete_j(pid_t pid){
 
     struct job_t *temp = search_j(pid);
@@ -402,6 +362,7 @@ void delete_j(pid_t pid){
         return;
 }
 
+// print all the BACKGROUND processes
 void print_j(){
 
     struct job_t *structjob = main_j;
@@ -411,7 +372,6 @@ void print_j(){
                 structjob->cmdline, structjob->state, structjob->is_active);*/
         structjob = structjob->next;
     }
-
 }
 
 void create_new_args(char *string, int counter){
@@ -466,12 +426,15 @@ int is_there_any_BG_process(){
 
     while (temp){
 
-        if(temp->pid > 0){
-            if(temp->state == BG){
-                fprintf(stdout, "DEGER : %ld\n", (long) temp->pid);
-                fprintf(stderr, "There is a background process. You can't exit now..\n");
-                return 1;
-            }
+        if(temp->state == BG){
+
+            char *arr[2];
+            arr[0] = "jobs";
+
+
+            fprintf(stdout, "DEGER : %ld\n", (long) temp->pid);
+            fprintf(stderr, "There is a background process. You can't exit now..\n");
+            return 1;
         }
         temp = temp->next;
     }
@@ -479,33 +442,7 @@ int is_there_any_BG_process(){
     return 0;
 }
 
-// bu signal handler
-// burada eksiklik var tamamlayınca anlatcam..
-void handle_signal(int signal) {
-    pid_t  process = getpid();
-
-    // Find out which signal we're handling
-    switch (signal) {
-        case SIGTSTP:
-            //kill(process, SIGTSTP);
-            //fprintf(stdout, "%ld\n", (long) getsid(getpid()));
-            //kill(tcgetpgrp((int)getpid()), signal);
-            //pid_t foregroundpgid=tcgetpgrp(0);
-            //printf("%ld\n", (long) foregroundpgid);
-            //printf("Caught SIGTSTP now stop.%ld\n", (long)getpid());
-            break;
-        case SIGINT:
-            printf("Caught SIGINT, exiting now\n");
-            exit(0);
-        default:
-            fprintf(stderr, "Caught wrong signal: %d\n", signal);
-            return;
-    }
-}
-
-/* burada da eğer kullanıcı inputunda & gönderiyorsa
-onu execl methoduna göndermeden önce NULL yapmak için
-yoksa arg olarak & da yolluyor */
+// to make sure that user did not send & to execl command
 void setAmpersandToNull(char *args[], int counter){
     for (int i = 0; i < counter; i++) {
 
@@ -515,26 +452,6 @@ void setAmpersandToNull(char *args[], int counter){
         }
     }
 }
-
-/*
-void scriptToArgs(char *args[], char *string, int counter){
-    char *path = string;
-    char del = "\0";
-
-    int i;
-    for (i = 0; i < counter; ++i)
-        args[i] = "";
-
-    int count = 1;
-    for (i = 0;  i<strlen(path) ; i++) {
-        if(path[i] == del)
-            count++;
-    }
-
-    for(i = 0; i < count; i++){
-    }
-
-}*/
 
 
 char* concat(int count, ...)
@@ -640,7 +557,7 @@ char *find_command(char *args[], int counter){
                                 char buffer[128];
                                 const char *sep = " ";
                                 strcpy(buffer, arr[1]);
-                                for (int z = 2; z < last; z++) {
+                                for (int z = 2; z <= last; z++) {
                                     strcat(buffer, sep);
                                     strcat(buffer, arr[z]);
                                 }
@@ -660,8 +577,7 @@ char *find_command(char *args[], int counter){
     return NULL;
 }
 
-// bu fonksiyon FG yzıldığında o anda çalışan foreground processin pid
-// bulmak için..
+// to find pid of a Foreground process
 pid_t found_pid(struct job_t *jobs) {
 
     while (jobs){
@@ -674,9 +590,9 @@ pid_t found_pid(struct job_t *jobs) {
 
     return 0;
 }
-// BUDA SIGNAL HANDLER GELINCE KAFASINI KOPARIYOZ..
-void sigtstp_handler(int sig)
-{
+
+// signal handler for Foreground process
+void sigtstp_handler(int sig) {
     int pid = found_pid(main_j);
 
     if (pid != 0) {
@@ -693,17 +609,16 @@ int main(void) {
     int background; /* equals 1 if a command is followed by '&' */
     char *args[MAX_LINE / 2 + 1]; /*command line arguments */
     int redirect;
-    // bu counter arg sayısını sayıyor
-    // setup fonksiyonuna gönderiyom
-    int counter;
+    int counter;    // to count how many argumants that user typed
+
+    // insert main process to job structure
     insert_j(getpid(), "myshell", UNDEF);
 
     while (1) {
         background = 0;
         redirect = 0;
-        // bu yazı için
+
         fprintf(stdout, "myshell :");
-        // bu da düzgün gözüksün die
         fflush(stdout);
 
         /*setup() calls exit() when Control-D is entered */
@@ -719,60 +634,79 @@ int main(void) {
         otherwise it will invoke the setup() function again. */
 
         setAmpersandToNull(args, counter);
-        // clr komutu için
+
+        // clr
         if (strncmp(args[0], "clr", 127) == 0){
             system("clear");
         }
-            // alias için burasını da tamamlıycam.
+        // alias
         else if(strncmp(args[0], "alias", 127) == 0){
             if(args[1] != NULL){
+
+                // print all aliases
                 if(strncmp(args[1], "-l", 127) == 0){
                     print();
                 }
                 else{
 
-                    // name buluyor sonra null die check et.
+                    // find name and command from args
                     char *name = find_name(args, counter);
                     char *command = find_command(args, counter);
                     const char *asd = name;
                     const char *asd2 = command;
+
                     if(asd && asd2){
                         char *cmd = strdup(asd);
                         char *bash = strdup(asd2);
+
+                        // alias added
                         insert(cmd, bash);
                     }
                     else{
-                        // hata verdirebilirsin..
+                        // couldn't find name or command from args
                         fprintf(stderr, "Command not found : wrong alias statement..\n");
                     }
-
                 }
             }
             else{
                 fprintf(stderr, "Command not found : too few arguments..\n");
             }
         }
+
+        // unalias
         else if((strncmp(args[0], "unalias", 127) == 0) && (args[1] != NULL)){
             delete_node(args[1]);
         }
-            // kullanıcının komunutu run et..
+
+        // exit
         else if (strncmp(args[0], "exit", 127) == 0){
-            // burada background processleri kontrol et. yoksa bitir.
+
+            // check for background process
             if(!is_there_any_BG_process())
                 exit(0);
         }
+
+        // when user types alias name
         else if(find(args[0])){
             /* BURADA USER ALIAS TANIMLAMIŞ VE ONUN AKTİF OLDUĞUNU GÖSTERMEKTEDİR
              * FORK YAPIP CHILD I SPLITTER A YOLLUYACAK KOMANSE COK BARIZ
-             * */
+             */
             struct alias *run = find(args[0]);
+            const char *cmd = run->script;
+            int deger = string_parser(run->script);
+            char *arr[deger];
+            const char *parse = "\" ";
+            int cnt = 0;
 
-            //scriptToArgs(args, run->script, counter);
+            char *temp = strdup(cmd);
+            char *sep = strtok(temp, parse);
+            while (sep){
+                arr[cnt] = strdup(sep);
+                fprintf(stdout, "%s\n", arr[cnt]);
 
-            /*for (int i = 0; i < counter ; ++i) {
-                args[i] = run->script;
-                fprintf(stdout, "0%s0\n", args[i]);
-            }*/
+                sep = strtok(NULL, parse);
+                cnt++;
+            }
 
             pid_t pid;
 
@@ -784,7 +718,7 @@ int main(void) {
             }
             if (pid == 0){
                 //fprintf(stdout, "0%s0\n", run->script);
-                splitter(args);
+                splitter(arr);
                 exit(0);
             }
             else if (pid < 0){
@@ -795,11 +729,9 @@ int main(void) {
             }
 
 
-            //fprintf(stdout, "%s\n", run->script);
-            //system(run->script);
-            //fprintf(stdout, "%s\n", run->script);
-
         }
+
+        // fg command
         else if ((strncmp(args[0], "fg", 127) == 0) && (!args[1])){
             /* ne yapıyordu?
 
@@ -849,17 +781,16 @@ int main(void) {
 
         }
         else{
-            // bütün işleri childpid yapacak..
-            // parent dediğimiz main process sadece foreground ve background da değişecek
             pid_t childpid;
-            /* set up signal handlers here ... */
             childpid = fork();
 
+            // error handling
             if (childpid == -1) {
                 perror("Failed to fork");
                 return 1;
             }
             if (childpid == 0){
+                // child process
 
                 if(redirect == 1) {
 
@@ -898,9 +829,7 @@ int main(void) {
                     splitter(args);
                     exit(0);
                 }
-                /*for (int i = 0; i < counter; i++) {
-                    fprintf(stdout, "args [%d] is %s\n", i, args[i]);
-                }*/
+
                 char *arr[counter];
                 for(int p=0; p < counter; p++) {
                     arr[p] = strdup(args[p]);
@@ -908,47 +837,41 @@ int main(void) {
                 setArrowToNull(arr, counter);
                 splitter(arr);
                 exit(0);
-                //setArrowToNull(args, counter);
             }
+
+            // interrupt error handler
             else if (childpid < 0){
                 fprintf(stderr, "A signal must have interrupted the wait!\n");
             }
             else {
-                /* burası main process...
-                bu if koşulundan emin değilim ama yinede kalsın..
-                temel olarak main processin pid sine bakıp
-                ona eşit bir process grubu oluşturuyor..
-                googledan process group yazarsan bulursun..
-                if(setpgid(getpid(), getpid()) == 0)
-                    perror("setpid");
-
-                bu signal.h kütüphanesinde tanımlı struct yapısı..
-                sinyal için kullanıyoz. */
-                struct sigaction sa;
+                // parent pid
                 if (background) {
-                    /*SIGTSTP -> ctrl+z
-                    SIG_IGN -> signal ignore demek.. yani ctrl+z yi görmezden gel dioz.. */
-                    //setpgid(childpid,childpid);
+                    // ignore ctrl+z signal
                     signal(SIGTSTP, SIG_IGN);
+
+                    // insert this process to job structure
                     const char *buf = args[0];
                     char *command = strdup(buf);
                     insert_j(childpid, command, BG);
                 }
                 else{
-                    // bunlar foreground processteki ctrl+z sinyali handle etmek için
-                    // BURAYA YAZCAN SIGNALİ daha tamamlanmadı burası..
+                    // to handle ctrl+z signal on foreground process
                     signal(SIGTSTP, sigtstp_handler);
 
 
-                    // foreground işleminin bitmesi için bekle...
+                    // insert this process to job structure
                     const char *buf = args[0];
                     char *command = strdup(buf);
                     insert_j(childpid, command, FG);
+
+                    // wait until child finishes
                     waitpid(childpid, 0, WUNTRACED);
+
+                    // update job structure
+                    struct job_t *temp = search_j(childpid);
+                    temp->state = ST;
                 }
                 fprintf(stdout, "PARENT ID: %ld with child id: %ld \n", (long) getpid(), childpid);
-                struct job_t *temp = search_j(childpid);
-                temp->state = ST;
                 print_j();
             }
         }

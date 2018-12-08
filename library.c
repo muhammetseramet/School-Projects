@@ -374,40 +374,6 @@ void print_j(){
     }
 }
 
-void create_new_args(char *string, int counter){
-    char **args = malloc(counter * sizeof(char *));
-    const char *del = " ";
-    char *temp = strdup(string);
-    int i = 0;
-    while (temp){
-        args[i] = temp;
-        i++;
-        if (i > counter)
-            break;
-
-        temp = strtok(NULL, del);
-    }
-    // fork yapıp çalıştıracak splitterda..
-    pid_t pid;
-    pid = fork();
-
-    if (pid == -1) {
-        perror("Failed to fork");
-        return;
-    }
-    if (pid == 0){
-        splitter(args);
-        exit(0);
-    }
-    else if (pid < 0){
-        fprintf(stderr, "A signal must have interrupted the wait!\n");
-    }
-    else{
-        waitpid(pid, 0, WUNTRACED);
-    }
-
-}
-
 int string_parser(char *string){
     int ret = 1;
     char del = ' ';
@@ -426,11 +392,7 @@ int is_there_any_BG_process(){
 
     while (temp){
 
-        if(temp->state == BG){
-
-            char *arr[2];
-            arr[0] = "jobs";
-
+        if((temp->state == BG) && (getpgid(temp->pid) != -1)){
 
             fprintf(stdout, "DEGER : %ld\n", (long) temp->pid);
             fprintf(stderr, "There is a background process. You can't exit now..\n");
@@ -452,37 +414,6 @@ void setAmpersandToNull(char *args[], int counter){
         }
     }
 }
-
-
-char* concat(int count, ...)
-{
-    va_list ap;
-    int i;
-
-    // Find required length to store merged string
-    int len = 1; // room for NULL
-    va_start(ap, count);
-    for(i=0 ; i<count ; i++)
-        len += strlen(va_arg(ap, char*));
-    va_end(ap);
-
-    // Allocate memory to concat strings
-    char *merged = calloc(sizeof(char),len);
-    int null_pos = 0;
-
-    // Actually concatenate strings
-    va_start(ap, count);
-    for(i=0 ; i<count ; i++)
-    {
-        char *s = va_arg(ap, char*);
-        strcpy(merged+null_pos, s);
-        null_pos += strlen(s);
-    }
-    va_end(ap);
-
-    return merged;
-}
-
 
 char *find_name(char *args[], int counter){
     char del = '"';
@@ -688,24 +619,32 @@ int main(void) {
 
         // when user types alias name
         else if(find(args[0])){
-            /* BURADA USER ALIAS TANIMLAMIŞ VE ONUN AKTİF OLDUĞUNU GÖSTERMEKTEDİR
-             * FORK YAPIP CHILD I SPLITTER A YOLLUYACAK KOMANSE COK BARIZ
-             */
+            // find alias script
             struct alias *run = find(args[0]);
-            const char *cmd = run->script;
-            int deger = string_parser(run->script);
+            char *temp = run->script;
+            const char delim = '\"';
+            char *buf = &temp[1];
+            char *dene;
+
+            int deger = string_parser(temp);
             char *arr[deger];
-            const char *parse = "\" ";
-            int cnt = 0;
+            int c = 0;
+            // split the quotes from the script
+            while(dene = strsep(&buf, &delim)){
 
-            char *temp = strdup(cmd);
-            char *sep = strtok(temp, parse);
-            while (sep){
-                arr[cnt] = strdup(sep);
-                fprintf(stdout, "%s\n", arr[cnt]);
+                if(dene[0] != '\0'){
+                    char *temp = dene;
+                    const char sep = ' ';
+                    // split the spaces
+                    while (temp = strsep(&dene, &sep)){
+                        if(temp[0] != '\0'){
+                            // store each command one by one at arr
+                            arr[c] = strdup(temp);
+                            c++;
+                        }
+                    }
 
-                sep = strtok(NULL, parse);
-                cnt++;
+                }
             }
 
             pid_t pid;
@@ -717,7 +656,6 @@ int main(void) {
                 return 1;
             }
             if (pid == 0){
-                //fprintf(stdout, "0%s0\n", run->script);
                 splitter(arr);
                 exit(0);
             }
@@ -728,20 +666,10 @@ int main(void) {
                 waitpid(pid, 0, WUNTRACED);
             }
 
-
         }
 
         // fg command
         else if ((strncmp(args[0], "fg", 127) == 0) && (!args[1])){
-            /* ne yapıyordu?
-
-            şimdi bir fonksiyona göndercek
-            orada bütün processleri iterate etcek
-            pid -1 değilse kill fonksiyonu ile stop olacak
-            sonra aynı fonksiyon içinde
-            kill fonksiyonu ile fonksiyonları çalıştırcak
-            waitpid */
-
 
             struct job_t *temp = main_j;
             while (temp){
@@ -752,33 +680,23 @@ int main(void) {
                     continue;
                 }
 
-                pid_t pid = fork();
+                if(temp->state == UNDEF) {
+                    break;
+                }
 
-                if (pid == -1) {
-                    perror("Failed to fork");
-                    return 1;
-                }
-                if(pid == 0){
-                    args[1] = "1";
-                    splitter(args);
-                    exit(0);
-                    /*char buf[50];
-                    args[1] += snprintf(args[1], "%ld", temp->pid);
-                    splitter(args);*/
-                }
-                else if (pid < 0){
-                    fprintf(stderr, "A signal must have interrupted the wait!\n");
-                }
-                else{
-                    temp->pid = -1;
-                    temp->is_active = 0;
-                    temp->state = FG;
-                    waitpid(pid, 0, WUNTRACED);
-                }
+                kill(temp->pid, SIGSTOP);
+
+                if(tcsetpgrp(STDOUT_FILENO, getpgid(temp->pid)) == -1)
+                    perror("tcsetpgrp failed.\n");
+
+                kill(temp->pid, SIGCONT);
+                signal(SIGTSTP, sigtstp_handler);
+                waitpid(temp->pid, 0, WUNTRACED);
+
                 temp = temp->next;
             }
             // if BG THEN TO FG
-
+            continue;
         }
         else{
             pid_t childpid;
@@ -846,9 +764,10 @@ int main(void) {
             else {
                 // parent pid
                 if (background) {
+
                     // ignore ctrl+z signal
                     signal(SIGTSTP, SIG_IGN);
-
+                    setpgid(childpid, childpid);
                     // insert this process to job structure
                     const char *buf = args[0];
                     char *command = strdup(buf);
@@ -871,7 +790,7 @@ int main(void) {
                     struct job_t *temp = search_j(childpid);
                     temp->state = ST;
                 }
-                fprintf(stdout, "PARENT ID: %ld with child id: %ld \n", (long) getpid(), childpid);
+                //fprintf(stdout, "PARENT ID: %ld with child id: %ld \n", (long) getpid(), childpid);
                 print_j();
             }
         }

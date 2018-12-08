@@ -8,6 +8,9 @@
 #include <stdarg.h>
 #include <fcntl.h>
 
+char **inputArgs;
+char **outputArgs;
+
 #define MAX_LINE 80 /* 80 chars per line, per command, should be enough. */
 
 /* The setup function below will not return any value, but it will just: read
@@ -90,6 +93,44 @@ char* findTheLastArg(char* args[], int counter){
 
 }
 
+char** pipeInput(char* args[], int counter){
+    char **inputArgs;
+    inputArgs = malloc((MAX_LINE/2)* sizeof(*inputArgs));
+
+    for(unsigned int x=0; x<counter; x++){
+
+        if(strcmp(args[x], "|")==0){
+            for(int i=0; i<x; i++){
+                inputArgs[i] = args[i];
+            }
+            return inputArgs;
+
+        }
+
+    }
+
+}
+
+char** pipeOutput(char* args[], int counter){
+    char **outputArgs;
+    outputArgs = malloc((MAX_LINE/2)* sizeof(*inputArgs));
+    int b=0;
+    for(unsigned int x=0; x<counter; x++){
+
+        if(strcmp(args[x], "|")==0){
+            b=x+1;
+            for(int i=0; i<counter-x; i++){
+                outputArgs[i] = args[b];
+                b++;
+            }
+            return outputArgs;
+
+        }
+
+    }
+
+}
+
 char* findInputFile(char *args[], int counter){
 
     while (1){
@@ -141,6 +182,17 @@ void setArrowToNull(char *args[], int counter){
         fprintf(stdout, "args%d :%s\n", j, args[j]);
     }
 
+
+}
+
+void setLineToNull(char* args[], int counter){
+
+    for(int i=0; i<counter; i++){
+        if(strcmp(args[i], "|")==0){
+            args[i] = NULL;
+            return;
+        }
+    }
 
 }
 
@@ -199,7 +251,7 @@ void splitter(char *argv[]){
 }
 
 // burada pek bir değişiklik yok..
-void setup(char inputBuffer[], char *args[], int *background, int *counter, int *redirect) {
+void setup(char inputBuffer[], char *args[], int *background, int *counter, int *redirect, int *isPipe) {
     int length, /* # of characters in the command line */
             i,      /* loop index for accessing inputBuffer array */
             start,  /* index where beginning of next command parameter is */
@@ -237,7 +289,6 @@ void setup(char inputBuffer[], char *args[], int *background, int *counter, int 
         switch (inputBuffer[i]) {
             case ' ':
             case '\t': /* argument separators */
-                //case '"':
                 if (start != -1) {
                     args[ct] = &inputBuffer[start];    /* set up pointer */
                     ct++;
@@ -287,6 +338,9 @@ void setup(char inputBuffer[], char *args[], int *background, int *counter, int 
                 }else if(inputBuffer[i] == 2 && inputBuffer[i+1] == '>'){
                     *redirect = 4;// error
                 }
+                if(inputBuffer[i] == '|'){
+                    *isPipe=1;
+                }
 
         } /* end of switch */
     }    /* end of for */
@@ -296,9 +350,7 @@ void setup(char inputBuffer[], char *args[], int *background, int *counter, int 
 
 } /* end of setup routine */
 
-/*
- * Job structure to follow processes
- * */
+// job structure
 #define UNDEF 0 // undefinded for Main Process
 #define FG 1    // foreground processes
 #define BG 2    // background processes
@@ -374,6 +426,7 @@ void print_j(){
     }
 }
 
+// count the number of spaces
 int string_parser(char *string){
     int ret = 1;
     char del = ' ';
@@ -385,7 +438,7 @@ int string_parser(char *string){
     return  ret;
 }
 
-
+// check BG process
 int is_there_any_BG_process(){
 
     struct job_t *temp = main_j;
@@ -415,6 +468,7 @@ void setAmpersandToNull(char *args[], int counter){
     }
 }
 
+// return the name of alias
 char *find_name(char *args[], int counter){
     char del = '"';
     char *name = NULL;
@@ -450,7 +504,7 @@ char *find_name(char *args[], int counter){
     return NULL;
 }
 
-// bu burada dursun eğer lazım olursa buradan devam edelim
+// return the bash script of alias
 char *find_command(char *args[], int counter){
     char del = '"';
     int number = 0;
@@ -534,13 +588,65 @@ void sigtstp_handler(int sig) {
     return;
 }
 
+// carry bg processes to foreground
+void carry_process(){
+    struct job_t *temp = main_j;
+    struct job_t *myshell = NULL;
+    int status;
+    while(temp){
+
+        if(temp->state == BG){
+
+            pid_t pid = getpgid(temp->pid);
+
+            // if process is terminated
+            if(pid == -1){
+                temp->state = ST;
+                temp->is_active = 0;
+                temp = temp->next;
+                continue;
+            }
+
+            fprintf(stdout, "The %s is stopping now..\n", temp->cmdline);
+            fprintf(stdout, "The %s is in the foreground now..\n", temp->cmdline);
+            // stop bg process
+            kill(temp->pid,SIGSTOP);
+
+            //if(tcsetpgrp(STDIN_FILENO, getpgid(temp->pid)) == -1)
+            //    perror("tcsetpgrp failed..\n");
+
+
+            // continue bg process
+            kill(temp->pid, SIGCONT);
+            signal(SIGTSTP, sigtstp_handler);
+            // wait until it closes
+            waitpid(temp->pid, &status, WUNTRACED);
+            fprintf(stdout, "The %s is closed..\n", temp->cmdline);
+            temp->state = ST;
+            temp->is_active = 0;
+        }
+
+        if(temp->state == UNDEF)
+            myshell = temp;
+
+        temp = temp->next;
+    }
+    fprintf(stdout, "Returning to myshell..\n");
+    // get back to main process
+    if(tcsetpgrp(STDIN_FILENO, getpgid(myshell->pid)))
+        perror("tcsetpgrp failed..\n");
+
+}
 
 int main(void) {
     char inputBuffer[MAX_LINE]; /*buffer to hold command entered */
     int background; /* equals 1 if a command is followed by '&' */
     char *args[MAX_LINE / 2 + 1]; /*command line arguments */
+    int isPipe;
     int redirect;
     int counter;    // to count how many argumants that user typed
+    int pipefd[2];
+    pipe(pipefd);
 
     // insert main process to job structure
     insert_j(getpid(), "myshell", UNDEF);
@@ -548,12 +654,13 @@ int main(void) {
     while (1) {
         background = 0;
         redirect = 0;
+        isPipe=0;
 
         fprintf(stdout, "myshell :");
         fflush(stdout);
 
         /*setup() calls exit() when Control-D is entered */
-        setup(inputBuffer, args, &background, &counter, &redirect);
+        setup(inputBuffer, args, &background, &counter, &redirect, &isPipe);
 
         if (counter == 0)
             continue;
@@ -669,34 +776,10 @@ int main(void) {
         }
 
         // fg command
-        else if ((strncmp(args[0], "fg", 127) == 0) && (!args[1])){
+        else if ((strncmp(args[0], "fg", 127) == 0)){
 
-            struct job_t *temp = main_j;
-            while (temp){
-
-                if(!temp->is_active){
-                    temp->state = ST;
-                    temp = temp->next;
-                    continue;
-                }
-
-                if(temp->state == UNDEF) {
-                    break;
-                }
-
-                kill(temp->pid, SIGSTOP);
-
-                if(tcsetpgrp(STDOUT_FILENO, getpgid(temp->pid)) == -1)
-                    perror("tcsetpgrp failed.\n");
-
-                kill(temp->pid, SIGCONT);
-                signal(SIGTSTP, sigtstp_handler);
-                waitpid(temp->pid, 0, WUNTRACED);
-
-                temp = temp->next;
-            }
+            carry_process();
             // if BG THEN TO FG
-            continue;
         }
         else{
             pid_t childpid;
@@ -710,51 +793,63 @@ int main(void) {
             if (childpid == 0){
                 // child process
 
-                if(redirect == 1) {
+                if (isPipe == 1) {
 
-                    int fd = open(findTheLastArg(args, 0), O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IWUSR);
-                    dup2(fd, 1);   // make stdout go to file
-
-                    close(fd);
-                }else if(redirect == 2){
-                    int fd = open(findTheLastArg(args,0), O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-
-                    dup2(fd, 1);
-
-                    close(fd);
-                }else if(redirect == 3){
-                    int fd = open(findTheLastArg(args, 0), O_RDONLY, 0);
-                    dup2(fd, 0);
-                    close(fd);
-
-                }else if(redirect == 4){
-
-                    int fd = open(findTheLastArg(args, 0), O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
-
-                    dup2(fd, 2);
-                    close(fd);
+                    dup2(pipefd[1], 1);
+                    close(pipefd[1]);
+                    splitter(pipeInput(args, counter));
+                    exit(0);
                 }
-                else if(redirect == 5){
+                else{
 
-                    int output = open(findTheLastArg(args, 0), O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
-                    int input = open(findInputFile(args, 0), O_RDONLY, 0);
-                    dup2(input, 0);
-                    dup2(output, 1);
-                    close(output);
-                    close(input);
-                }
-                else if(redirect == 0){
-                    splitter(args);
+                    if(redirect == 1) {
+
+                        int fd = open(findTheLastArg(args, 0), O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IWUSR);
+                        dup2(fd, 1);   // make stdout go to file
+
+                        close(fd);
+                    }else if(redirect == 2){
+                        int fd = open(findTheLastArg(args,0), O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+
+                        dup2(fd, 1);
+
+                        close(fd);
+                    }else if(redirect == 3){
+                        int fd = open(findTheLastArg(args, 0), O_RDONLY, 0);
+                        dup2(fd, 0);
+                        close(fd);
+
+                    }else if(redirect == 4){
+
+                        int fd = open(findTheLastArg(args, 0), O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+
+                        dup2(fd, 2);
+                        close(fd);
+                    }
+                    else if(redirect == 5){
+
+                        int output = open(findTheLastArg(args, 0), O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+                        int input = open(findInputFile(args, 0), O_RDONLY, 0);
+                        dup2(input, 0);
+                        dup2(output, 1);
+                        close(output);
+                        close(input);
+                    }
+                    else if(redirect == 0){
+                        splitter(args);
+                        exit(0);
+                    }
+
+                    char *arr[counter];
+                    for(int p=0; p < counter; p++) {
+                        arr[p] = strdup(args[p]);
+                    }
+                    setArrowToNull(arr, counter);
+                    splitter(arr);
                     exit(0);
                 }
 
-                char *arr[counter];
-                for(int p=0; p < counter; p++) {
-                    arr[p] = strdup(args[p]);
-                }
-                setArrowToNull(arr, counter);
-                splitter(arr);
-                exit(0);
+
             }
 
             // interrupt error handler
@@ -762,13 +857,25 @@ int main(void) {
                 fprintf(stderr, "A signal must have interrupted the wait!\n");
             }
             else {
+
+                if(isPipe==1){
+                    dup2(pipefd[0], 0);
+                    close(pipefd[0]);
+                    close(pipefd[1]);
+                    wait(NULL);
+                    splitter(pipeOutput(args, counter));
+                }
+
+
                 // parent pid
                 if (background) {
 
                     // ignore ctrl+z signal
                     signal(SIGTSTP, SIG_IGN);
+
                     setpgid(childpid, childpid);
                     // insert this process to job structure
+
                     const char *buf = args[0];
                     char *command = strdup(buf);
                     insert_j(childpid, command, BG);

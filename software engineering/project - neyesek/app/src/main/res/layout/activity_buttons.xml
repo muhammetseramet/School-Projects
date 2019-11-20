@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:onClick="action_random"
+            android:text="@string/rastgele" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:onClick="onFindClick"
+            android:text="@string/Favori" />
+
+        <Button
+            android:id="@+id/profile_screen"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:text="Profil"
+            />
+        <Button
+            android:id="@+id/nearby_places"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:text="NearBy Rest"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserPage">
+
+    <TextView
+        android:id="@+id/level"
+        android:layout_width="109dp"
+        android:layout_height="92dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="@color/quantum_googred900"
+        app:layout_constraintEnd_toStartOf="@+id/user_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_centerInParent="true"
+        android:textSize="70dp"
+        android:scaleType="fitXY"
+        tools:src="@drawable/avatara"/>
+
+
+    <TextView
+        android:id="@+id/user_info"
+        android:singleLine="false"
+        android:layout_width="220dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@color/quantum_black_100"
+        android:ems="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Username Surname" />
+
+    <TextView
+        android:id="@+id/fullname"
+        android:layout_width="220dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:singleLine="false"
+        android:textColor="@color/quantum_black_100"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_info"
+        tools:text="Username Surname" />
+
+    <TextView
+        android:id="@+id/fav_restName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:text="Favourite Restaurants"
+        android:textColor="@color/quantum_googblue900"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fullname"
+        tools:text="Favourite Restaurants" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="247dp"
+        android:layout_height="162dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
+        android:outlineAmbientShadowColor="@color/quantum_bluegrey100"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fav_restName"
+        app:layout_goneMarginEnd="20dp">
+
+        <TextView
+            android:id="@+id/fav_rest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:singleLine="false"
+            android:textColor="@color/quantum_black_100"
+            app:layout_constraintTop_toBottomOf="@+id/fav_restName"
+            tools:layout_editor_absoluteX="64dp" />
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/prev_restName"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@color/quantum_googblue900"
+        android:ems="10"
+        android:text="Previous Restaurants"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="256dp"
+        android:layout_height="162dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:outlineAmbientShadowColor="@color/quantum_bluegrey100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prev_restName"
+        app:layout_constraintVertical_bias="0.133">
+
+        <TextView
+            android:id="@+id/prev_rest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textColor="@color/quantum_black_100"
+            android:singleLine="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/prev_restName" />
+    </ScrollView>
+
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">NeYesek</string>
+    <string name="google_maps_key">AIzaSyAxsRH1zTvJQ5hVJHCwm35_Ohq4P4eDkwA</string>
+
+    <!--texts embedded in login screen-->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Don\'t you have an account! Sign up here.</string>
+
+    <!--texts embedded in register screen-->
+    <string name="user_name">Full name</string>
+    <string name="username">Username</string>
+    <string name="register">Register !</string>
+    <string name="return_login">Already have an account? Login here!</string>
+
+
+    <string name="restoran">Restoran:</string>
+    <string name="miss_simit">Burger King</string>
+    <string name="mesafe">Mesafe:</string>
+    <string name="indirim">İndirim:</string>
+    <string name="_10">%10</string>
+    <string name="kalan_sure">İndirim Saati:</string>
+    <string name="_1_1">🏃‍: 1 km\n🚗: 1 km</string>
+    <string name="button">Button</string>
+    <string name="rastgele">Rastgele</string>
+    <string name="Favori">Favori</string>
+    <string name="error">Error</string>
+</resources>

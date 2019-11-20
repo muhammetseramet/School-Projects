@@ -1,0 +1,292 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/modeltech64_10.5/examples
+T_opt
+!s110 1558805837
+VV?_PK6VAD0DY7RzSg;gPN3
+04 7 4 work alucont fast 0
+=1-68f72834bd58-5ce97d4d-103-2fac
+Z1 o-quiet -auto_acc_if_foreign -work work +acc
+Z2 tCvgOpt 0
+n@_opt
+Z3 OL;O;10.5;63
+R0
+T_opt1
+!s110 1558940373
+V_>2mBl7]Ko0_Q>WIaD>_G3
+Z4 04 9 4 work processor fast 0
+=1-68f72834bd58-5ceb8ad4-2d8-3f7c
+o-quiet -auto_acc_if_foreign -work work
+R2
+n@_opt1
+R3
+R0
+T_opt2
+!s110 1558863294
+VbIMPM^FoE?IhzX5<P=Gi=3
+R4
+=11-68f72834bd58-5cea5dbe-e2-77fc
+R1
+R2
+n@_opt2
+R3
+R0
+vadder
+Z5 !s110 1558940675
+!i10b 1
+!s100 Y;`Fz?LjC0QzPeNWf8_U<1
+IXSPQ95hobz6Hl@bh631>M2
+Z6 VDg1SIo80bB@j0V0VzS_@n1
+Z7 dC:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented
+w955031808
+8C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/adder.v
+FC:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/adder.v
+L0 1
+Z8 OL;L;10.5;63
+r1
+!s85 0
+31
+Z9 !s108 1558940675.000000
+!s107 C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/adder.v|
+!s90 -reportprogress|300|-work|work|-vopt|-stats=none|C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/adder.v|
+!i113 0
+Z10 o-work work -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R2
+valu32
+R5
+!i10b 1
+!s100 ZjD6_^^VTH_7K@8ljdSk@2
+I:z_>9dlI2nSSjB=@ha^g<0
+R6
+R7
+w1558533574
+8C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/alu32.v
+FC:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/alu32.v
+L0 1
+R8
+r1
+!s85 0
+31
+R9
+!s107 C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/alu32.v|
+!s90 -reportprogress|300|-work|work|-vopt|-stats=none|C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/alu32.v|
+!i113 0
+R10
+R2
+valucont
+R5
+!i10b 1
+!s100 5jUiE@Q=]W>>fEzYH`AGd0
+I3PB4gZS5:kAz?h:nA[l<W3
+R6
+R7
+w1558832200
+8C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/alucont.v
+FC:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/alucont.v
+L0 1
+R8
+r1
+!s85 0
+31
+R9
+!s107 C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/alucont.v|
+!s90 -reportprogress|300|-work|work|-vopt|-stats=none|C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/alucont.v|
+!i113 0
+R10
+R2
+vbrjmpcont
+R5
+!i10b 1
+!s100 =YQXVK>jYe3bnXC>E0h221
+IDchzOk7LZETk7W>hUaMbO0
+R6
+R7
+w1558862964
+8C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/brjmpcont.v
+FC:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/brjmpcont.v
+L0 2
+R8
+r1
+!s85 0
+31
+R9
+!s107 C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/brjmpcont.v|
+!s90 -reportprogress|300|-work|work|-vopt|-stats=none|C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/brjmpcont.v|
+!i113 0
+R10
+R2
+vcontrol
+R5
+!i10b 1
+!s100 0oe5eCl:EdlamH0d[mW^j2
+IA133WA;;5H[=gzhJ2e1nT1
+R6
+R7
+w1558811681
+8C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/control.v
+FC:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/control.v
+L0 1
+R8
+r1
+!s85 0
+31
+R9
+!s107 C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/control.v|
+!s90 -reportprogress|300|-work|work|-vopt|-stats=none|C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/control.v|
+!i113 0
+R10
+R2
+vmult2_to_1_32
+R5
+!i10b 1
+!s100 ^aXF>kbOQm5iDYT=bV7M11
+I2bm7SQ_732f:>kdA`NIgA2
+R6
+R7
+w1021138686
+8C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult2_to_1_32.v
+FC:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult2_to_1_32.v
+L0 1
+R8
+r1
+!s85 0
+31
+R9
+!s107 C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult2_to_1_32.v|
+!s90 -reportprogress|300|-work|work|-vopt|-stats=none|C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult2_to_1_32.v|
+!i113 0
+R10
+R2
+vmult2_to_1_5
+R5
+!i10b 1
+!s100 k]2`0V2=b67f6kc:ca8eK0
+IWHZn5aNOhQoD?nA<?B3V^3
+R6
+R7
+w955031666
+8C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult2_to_1_5.v
+FC:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult2_to_1_5.v
+L0 1
+R8
+r1
+!s85 0
+31
+R9
+!s107 C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult2_to_1_5.v|
+!s90 -reportprogress|300|-work|work|-vopt|-stats=none|C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult2_to_1_5.v|
+!i113 0
+R10
+R2
+vmult4_to_1_5
+Z11 !s110 1558940674
+!i10b 1
+!s100 ;38jNXTfekSn^V7XnYP@W1
+I`_d0Y[74dg>_1fTMzc]Wn3
+R6
+R7
+w1558630813
+8C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult4_to_1_5.v
+FC:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult4_to_1_5.v
+L0 1
+R8
+r1
+!s85 0
+31
+Z12 !s108 1558940674.000000
+!s107 C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult4_to_1_5.v|
+!s90 -reportprogress|300|-work|work|-vopt|-stats=none|C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult4_to_1_5.v|
+!i113 0
+R10
+R2
+vprocessor
+R11
+!i10b 1
+!s100 532[75[<UiKSbF5NzmWk20
+I8i0`VLXb^?hKE4Ha;n^lR0
+R6
+R7
+w1558863286
+8C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/processor.v
+FC:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/processor.v
+L0 1
+R8
+r1
+!s85 0
+31
+R12
+!s107 C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/processor.v|
+!s90 -reportprogress|300|-work|work|-vopt|-stats=none|C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/processor.v|
+!i113 0
+R10
+R2
+vshift
+R11
+!i10b 1
+!s100 GWP55OEfIRVA_6M>iSY8d2
+IjmC?:Pe^`@DW@cI<RSbnV0
+R6
+R7
+w955031664
+8C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/shift.v
+FC:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/shift.v
+L0 1
+R8
+r1
+!s85 0
+31
+R12
+!s107 C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/shift.v|
+!s90 -reportprogress|300|-work|work|-vopt|-stats=none|C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/shift.v|
+!i113 0
+R10
+R2
+vshift26_to_28
+R5
+!i10b 1
+!s100 V=X5OaRO55oTPh]CQD?;b3
+IU8CQWiC1h5n2em@E`z4AI2
+R6
+R7
+w1558525701
+8C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/shift26_to_28.v
+FC:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/shift26_to_28.v
+L0 1
+R8
+r1
+!s85 0
+31
+R9
+!s107 C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/shift26_to_28.v|
+!s90 -reportprogress|300|-work|work|-vopt|-stats=none|C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/shift26_to_28.v|
+!i113 0
+R10
+R2
+vsignext
+R5
+!i10b 1
+!s100 JAEfRFLIAaX=@V<j@h[jS1
+Im70?1XiWC1hFYE:o2:UN^2
+R6
+R7
+w1335991790
+8C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/signext.v
+FC:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/signext.v
+L0 1
+R8
+r1
+!s85 0
+31
+R9
+!s107 C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/signext.v|
+!s90 -reportprogress|300|-work|work|-vopt|-stats=none|C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/signext.v|
+!i113 0
+R10
+R2

@@ -1,0 +1,19 @@
+`timescale 1ns / 1ns
+module bn_test;
+	reg [31:0] input_a, input_b;
+      	reg [2:0] input_gin;
+      	wire output_sum, output_z, output_status;
+      	alu32 alu(
+              	.sum(output_sum),
+              	.a(input_a),
+              	.b(input_b),
+              	.zout(output_z),
+              	.gin(input_gin),
+              	.statusoutput(output_status)
+      	);
+	initial begin
+		input_a = 32'b011;
+          	input_b = 32'b010;
+          	input_gin = 3'b011;
+      	end
+endmodule

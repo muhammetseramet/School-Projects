@@ -1,0 +1,85 @@
+{C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/adder.v} {1 {vlog -work work -vopt -stats=none {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/adder.v}
+Model Technology ModelSim SE-64 vlog 10.5 Compiler 2016.02 Feb 13 2016
+-- Compiling module adder
+
+Top level modules:
+	adder
+
+} {} {}} {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/processor.v} {1 {vlog -work work -vopt -stats=none {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/processor.v}
+Model Technology ModelSim SE-64 vlog 10.5 Compiler 2016.02 Feb 13 2016
+-- Compiling module processor
+
+Top level modules:
+	processor
+
+} {} {}} {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/signext.v} {1 {vlog -work work -vopt -stats=none {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/signext.v}
+Model Technology ModelSim SE-64 vlog 10.5 Compiler 2016.02 Feb 13 2016
+-- Compiling module signext
+
+Top level modules:
+	signext
+
+} {} {}} {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/alucont.v} {1 {vlog -work work -vopt -stats=none {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/alucont.v}
+Model Technology ModelSim SE-64 vlog 10.5 Compiler 2016.02 Feb 13 2016
+-- Compiling module alucont
+
+Top level modules:
+	alucont
+
+} {} {}} {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/shift.v} {1 {vlog -work work -vopt -stats=none {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/shift.v}
+Model Technology ModelSim SE-64 vlog 10.5 Compiler 2016.02 Feb 13 2016
+-- Compiling module shift
+
+Top level modules:
+	shift
+
+} {} {}} {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/brjmpcont.v} {1 {vlog -work work -vopt -stats=none {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/brjmpcont.v}
+Model Technology ModelSim SE-64 vlog 10.5 Compiler 2016.02 Feb 13 2016
+-- Compiling module brjmpcont
+
+Top level modules:
+	brjmpcont
+
+} {} {}} {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/alu32.v} {1 {vlog -work work -vopt -stats=none {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/alu32.v}
+Model Technology ModelSim SE-64 vlog 10.5 Compiler 2016.02 Feb 13 2016
+-- Compiling module alu32
+
+Top level modules:
+	alu32
+
+} {} {}} {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/control.v} {1 {vlog -work work -vopt -stats=none {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/control.v}
+Model Technology ModelSim SE-64 vlog 10.5 Compiler 2016.02 Feb 13 2016
+-- Compiling module control
+
+Top level modules:
+	control
+
+} {} {}} {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/shift26_to_28.v} {1 {vlog -work work -vopt -stats=none {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/shift26_to_28.v}
+Model Technology ModelSim SE-64 vlog 10.5 Compiler 2016.02 Feb 13 2016
+-- Compiling module shift26_to_28
+
+Top level modules:
+	shift26_to_28
+
+} {} {}} {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult2_to_1_32.v} {1 {vlog -work work -vopt -stats=none {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult2_to_1_32.v}
+Model Technology ModelSim SE-64 vlog 10.5 Compiler 2016.02 Feb 13 2016
+-- Compiling module mult2_to_1_32
+
+Top level modules:
+	mult2_to_1_32
+
+} {} {}} {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult2_to_1_5.v} {1 {vlog -work work -vopt -stats=none {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult2_to_1_5.v}
+Model Technology ModelSim SE-64 vlog 10.5 Compiler 2016.02 Feb 13 2016
+-- Compiling module mult2_to_1_5
+
+Top level modules:
+	mult2_to_1_5
+
+} {} {}} {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult4_to_1_5.v} {1 {vlog -work work -vopt -stats=none {C:/Users/Muhammet/Desktop/lessons/Computer Organization/hw3p2/P-2 singlecycleMIPS-lite-commented/mult4_to_1_5.v}
+Model Technology ModelSim SE-64 vlog 10.5 Compiler 2016.02 Feb 13 2016
+-- Compiling module mult4_to_1_5
+
+Top level modules:
+	mult4_to_1_5
+
+} {} {}}

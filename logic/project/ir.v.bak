@@ -1,0 +1,28 @@
+`timescale 1ns/1ns
+module Irlogic(
+	input irload,
+	input clk,
+	input [15:0]instruction,
+	input [7:0] address,
+	output [3:0]treg,
+	output [3:0]sreg,
+	output [3:0]dreg,
+	output [3:0]opcode
+);
+
+reg Ir;
+
+initial begin
+	Ir <= instruction;
+end
+
+always @(posedge clk) begin
+	if(irload)
+		opcode <= Ir[15:12];
+		address <= Ir[7:0];
+		dreg <= Ir[11:8];
+		sreg <= Ir[7:4];
+		treg <= Ir[3:0];
+		end
+end
+endmodule

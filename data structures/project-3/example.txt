@@ -1,0 +1,4 @@
+berna altinel:math101,cse100,math259
+harun buyuktepe:blaw203,math101
+muhammet poyraz seramet:stat253,math259
+mehmet mustafa muhammet yilmaz:math259,hist111,stat253

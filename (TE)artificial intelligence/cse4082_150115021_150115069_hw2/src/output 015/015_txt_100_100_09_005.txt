@@ -1,0 +1,103 @@
+0.level	 Min Weight:474,060 	Average :480,289
+1.level	 Min Weight:474,060 	Average :479,423
+2.level	 Min Weight:474,060 	Average :478,931
+3.level	 Min Weight:474,060 	Average :478,436
+4.level	 Min Weight:474,060 	Average :476,525
+5.level	 Min Weight:473,990 	Average :475,076
+6.level	 Min Weight:473,980 	Average :474,257
+7.level	 Min Weight:472,910 	Average :473,288
+8.level	 Min Weight:472,910 	Average :473,134
+9.level	 Min Weight:472,910 	Average :473,155
+10.level	 Min Weight: 472,850 	Average :473,165
+11.level	 Min Weight: 471,990 	Average :473,076
+12.level	 Min Weight: 471,990 	Average :472,677
+13.level	 Min Weight: 471,890 	Average :472,264
+14.level	 Min Weight: 471,570 	Average :472,164
+15.level	 Min Weight: 471,560 	Average :471,974
+16.level	 Min Weight: 471,360 	Average :471,944
+17.level	 Min Weight: 470,690 	Average :471,766
+18.level	 Min Weight: 471,050 	Average :471,433
+19.level	 Min Weight: 470,330 	Average :471,228
+20.level	 Min Weight: 470,330 	Average :471,005
+21.level	 Min Weight: 470,330 	Average :470,881
+22.level	 Min Weight: 470,260 	Average :470,510
+23.level	 Min Weight: 470,150 	Average :470,354
+24.level	 Min Weight: 469,360 	Average :470,061
+25.level	 Min Weight: 469,360 	Average :469,805
+26.level	 Min Weight: 469,220 	Average :469,689
+27.level	 Min Weight: 469,220 	Average :469,796
+28.level	 Min Weight: 469,220 	Average :469,642
+29.level	 Min Weight: 468,700 	Average :469,412
+30.level	 Min Weight: 468,700 	Average :468,996
+31.level	 Min Weight: 468,230 	Average :468,694
+32.level	 Min Weight: 468,060 	Average :468,848
+33.level	 Min Weight: 467,690 	Average :468,728
+34.level	 Min Weight: 467,690 	Average :468,647
+35.level	 Min Weight: 467,650 	Average :468,455
+36.level	 Min Weight: 467,040 	Average :468,154
+37.level	 Min Weight: 467,040 	Average :468,378
+38.level	 Min Weight: 467,040 	Average :467,993
+39.level	 Min Weight: 466,790 	Average :467,636
+40.level	 Min Weight: 466,520 	Average :467,685
+41.level	 Min Weight: 466,210 	Average :467,340
+42.level	 Min Weight: 465,850 	Average :466,875
+43.level	 Min Weight: 465,630 	Average :466,681
+44.level	 Min Weight: 465,410 	Average :466,428
+45.level	 Min Weight: 465,410 	Average :466,218
+46.level	 Min Weight: 465,320 	Average :466,666
+47.level	 Min Weight: 465,190 	Average :466,018
+48.level	 Min Weight: 464,560 	Average :465,337
+49.level	 Min Weight: 464,560 	Average :465,843
+50.level	 Min Weight: 463,830 	Average :465,368
+51.level	 Min Weight: 463,810 	Average :465,217
+52.level	 Min Weight: 463,790 	Average :464,897
+53.level	 Min Weight: 463,790 	Average :464,676
+54.level	 Min Weight: 463,550 	Average :465,030
+55.level	 Min Weight: 463,550 	Average :464,590
+56.level	 Min Weight: 463,790 	Average :463,969
+57.level	 Min Weight: 463,420 	Average :464,880
+58.level	 Min Weight: 463,420 	Average :464,027
+59.level	 Min Weight: 463,420 	Average :464,071
+60.level	 Min Weight: 463,510 	Average :463,804
+61.level	 Min Weight: 463,200 	Average :463,414
+62.level	 Min Weight: 463,040 	Average :463,671
+63.level	 Min Weight: 463,040 	Average :463,551
+64.level	 Min Weight: 462,870 	Average :463,529
+65.level	 Min Weight: 462,550 	Average :463,273
+66.level	 Min Weight: 462,020 	Average :463,096
+67.level	 Min Weight: 462,020 	Average :463,579
+68.level	 Min Weight: 461,860 	Average :462,787
+69.level	 Min Weight: 461,860 	Average :462,805
+70.level	 Min Weight: 461,570 	Average :462,642
+71.level	 Min Weight: 461,770 	Average :461,949
+72.level	 Min Weight: 460,570 	Average :461,924
+73.level	 Min Weight: 460,570 	Average :462,025
+74.level	 Min Weight: 460,570 	Average :462,091
+75.level	 Min Weight: 460,570 	Average :461,206
+76.level	 Min Weight: 460,570 	Average :461,951
+77.level	 Min Weight: 460,520 	Average :460,930
+78.level	 Min Weight: 460,520 	Average :460,763
+79.level	 Min Weight: 459,950 	Average :460,608
+80.level	 Min Weight: 460,190 	Average :460,276
+81.level	 Min Weight: 460,060 	Average :460,540
+82.level	 Min Weight: 460,060 	Average :460,430
+83.level	 Min Weight: 460,060 	Average :460,590
+84.level	 Min Weight: 460,010 	Average :459,920
+85.level	 Min Weight: 459,790 	Average :459,977
+86.level	 Min Weight: 459,650 	Average :459,441
+87.level	 Min Weight: 459,650 	Average :460,272
+88.level	 Min Weight: 459,650 	Average :460,402
+89.level	 Min Weight: 458,950 	Average :460,020
+90.level	 Min Weight: 458,950 	Average :459,741
+91.level	 Min Weight: 458,890 	Average :459,744
+92.level	 Min Weight: 458,730 	Average :459,436
+93.level	 Min Weight: 458,730 	Average :459,631
+94.level	 Min Weight: 458,620 	Average :459,275
+95.level	 Min Weight: 457,750 	Average :459,241
+96.level	 Min Weight: 457,700 	Average :458,936
+97.level	 Min Weight: 457,700 	Average :458,925
+98.level	 Min Weight: 457,700 	Average :458,743
+99.level	 Min Weight: 457,560 	Average :458,233
+
+Minimum Weighted Vertex : 457,560
+General Average : 466,25076

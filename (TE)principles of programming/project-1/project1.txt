@@ -1,0 +1,8 @@
+perl c'ye çok benzer. c yi alan perl'de alabilir.
+					==> Bunların ikisi c ile beraber alınsın .	
+ruby de perl'e benziyor.
+
+javascript ayrı bir dünya.
+			==> Bunların ikisi beraber alınsın web tabanlı oldukları için. + python
+php'de javascript gibi. 
+

@@ -1,0 +1,21 @@
+1)
+şimdi şu farklı mı olacak ?
+3++**5; or ++3**5
+birinci soru için cevaplıyorum : evet. böyle bir farklılığı olan 
+denklem kurucaksın.
+
+????????
+2)
+şimdi burada ise aynı derecede olan iki işlemin dilin yapısı gereği
+left-right recursive olup olmadığına bakacağız.
+3*10/5 gibi..
+
+????????
+3)
+buradada yine order of evalution var... 
+peki bunla birincinin farkı ne aq o zaman ???
+burada global bir variable yapıp iki functionda onu değiştirebiliriz
+
+????????
+4)
+hepsi dökümanda var...

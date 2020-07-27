@@ -1,0 +1,8 @@
+0.level	 Min Weight: 65,000 	Average :66,000
+1.level	 Min Weight: 65,000 	Average :69,000
+2.level	 Min Weight: 65,000 	Average :65,000
+3.level	 Min Weight: 65,000 	Average :69,000
+4.level	 Min Weight: 65,000 	Average :72,000
+
+Minimum Weighted Clique : 65.0
+General Average : 68,200

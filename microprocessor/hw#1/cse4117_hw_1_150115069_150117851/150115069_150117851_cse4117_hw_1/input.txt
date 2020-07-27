@@ -1,0 +1,12 @@
+ldi 0 107
+ori 1 0 24
+dec 1
+ldi 2 27
+andi 3 2 45
+not 2 3
+add 0 1 2
+inc 0
+ldi 1 12
+subi 2 1 95
+not 3 2
+xor 0 0 3

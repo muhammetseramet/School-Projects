@@ -1,0 +1,27 @@
+.code
+	ldi 7 0x02ff
+	ldi 1 0x0400	//ird
+	ldi 3 0x0d00	//isr
+	st 3 1
+	ldi 2 0x0001
+	ldi 4 0x0000
+	ldi 5 0x0b00
+main:
+	ldi 0 0x0a01
+	ld 0 0
+	and 0 0 2
+	jz keypad2
+	ldi 0 0x0a00
+	ld 0 0
+	add 4 4 0
+	st 4 5
+keypad2:
+	ldi 0 0x0a03
+	ld 1 0
+	and 1 1 2
+	jz main
+	ldi 0 0x0a02
+	ld 1 0
+	add 4 4 1
+	st 4 5
+	jmp main

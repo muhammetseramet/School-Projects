@@ -1,0 +1,8 @@
+.code
+isr:
+	push 5
+	push 1
+	ldi 5 0x0b01
+	st 1 5
+	pop 1
+	pop 5

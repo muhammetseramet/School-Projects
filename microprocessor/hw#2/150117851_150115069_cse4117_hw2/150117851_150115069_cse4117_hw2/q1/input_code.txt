@@ -1,0 +1,24 @@
+.code 
+           ldi 7 0x0d00
+input1:
+           ldi 0 0x0a01
+           ld 1 0
+           sub 3 4 1
+           jz input2
+           ldi 0 0x0a00
+           ld 1 0
+           add 6 6 1
+           ldi 0 0x0c00
+           st 6 0
+input2:
+           ldi 0 0x0b01
+           ld 1 0
+           sub 3 4 1
+           jz repeat
+           ldi 0 0x0b00
+           ld 1 0
+           add 6 6 1
+           ldi 0 0x0c00
+           st 6 0
+repeat:
+           jmp input1

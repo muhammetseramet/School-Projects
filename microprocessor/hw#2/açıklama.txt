@@ -1,0 +1,33 @@
+1007 0d00 = LDI R7 0D00				# sp address 
+1010 0001 = LDI R4 0001 
+1000 0a01 = LDI R0 0a01				# ready key1 address
+2001 	  = LD R1, R0				# load ready key1 to reg1
+
+730b 	  = SUB R3, R4, R1			# R3 = R4 - R1
+									# Burada eğer işlemin sonucu 0'sa ready key1
+4007 	  = JZ 6 ==> PC = PC + 7	# basılmamış demektir o zaman aşağıdaki keypad1 okuma
+									# işlemlerini atla
+
+1000 0a00 = LDI R0, 0a00			# load keypad1 address
+2001	  = LD R1, R0				# keypad1 de yazan datayı oku
+718e	  = ADD R6, R6, R1 			# şu ana kadar yazılan bütün keypad sayılarını topla
+1000 0c00 = LDI R0, 0c00			# output address
+3180	  = ST R6, R0				# toplam sayıyı dışarıya outputa gönder
+
+1010 0001 = LDI R4 0001 
+1000 0b01 = LDI R0 0b01				# ready key2 address
+2001 	  = LD R1, R0				# load ready key2 to reg1
+
+
+730b 	  = SUB R3, R4, R1			# R3 = R4 - R1
+									# Burada eğer işlemin sonucu 0'sa ready key2
+4006 	  = JZ 6 ==> PC = PC + 6	# basılmamış demektir o zaman aşağıdaki keypad2 okuma
+									# işlemlerini atla
+
+1000 0b00 = LDI R0, 0b00			# load keypad2 address
+2001	  = LD R1, R0				# keypad2 de yazan datayı oku
+718e	  = ADD R6, R6, R1 			# şu ana kadar yazılan bütün keypad sayılarını topla
+1000 0c00 = LDI R0, 0c00			# output address
+3180	  = ST R6, R0				# toplam sayıyı dışarıya outputa gönder
+
+5fe3	  = JMP - 29				# kodun başında dön

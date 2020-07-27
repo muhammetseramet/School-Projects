@@ -1,0 +1,140 @@
+.code
+main:
+	ldi 4 0x0000
+	ldi 5 0x0000
+	ldi 7 0x02ff
+	call poll
+	ldi 0 0x000a
+	sub 1 2 0
+	jz perfaddition
+	inc 0
+	sub 1 2 0
+	jz perfsubtraction
+	inc 0
+	sub 1 2 0
+	jz perfmultiplication
+	inc 0
+	sub 1 2 0
+	jz perfdivision
+	jmp main
+perfaddition:
+	call addition
+	call display
+	jmp main
+perfsubtraction:
+	call subtraction
+	call display
+	jmp main
+perfmultiplication:
+	call multiplication
+	call display
+	jmp main
+perfdivision:
+	call division
+	call display
+	jmp main
+addition:
+	add 5 3 5
+	ret
+subtraction:
+	sub 5 3 5
+	ret
+multiplication:
+	add 4 4 3
+	dec 5
+	jz mulres
+	jmp multiplication
+mulres:
+	mov 5 4
+	ret
+division:
+	ldi 4 0x0000
+divloop1:
+	mov 2 5
+divloop2:
+	ldi 0 0x0001
+	sub 2 2 0
+	jz divloop1cont
+	inc 4
+	sub 0 3 5
+	jz divreturn
+	dec 4
+	sub 0 3 2
+	jz divreturn
+	jmp divloop2
+divloop1cont:
+	sub 3 3 5
+	inc 4
+	jmp divloop1
+divreturn:
+	mov 5 4
+	ret
+poll:
+	ldi 0 0x0501
+	ld 1 0
+	ldi 2 0x0001
+	and 3 1 2
+	jz poll
+	dec 0
+	ld 3 0
+	ldi 1 0x000a
+	sub 1 1 3
+	jz preopisadd
+	ldi 1 0x000b
+	sub 1 1 3
+	jz preopissub
+	ldi 1 0x000c
+	sub 1 1 3
+	jz preopismul
+	ldi 1 0x000d
+	sub 1 1 3
+	jz preopisdiv
+	ldi 1 0x000e
+	sub 1 1 3
+	jz clear
+	ldi 1 0x000f
+	sub 1 1 3
+	jz finalize
+	jmp number
+preopisadd:
+	push 3
+	push 5
+	ldi 5 0x0000
+	jmp poll
+preopissub:
+	push 3
+	push 5
+	ldi 5 0x0000
+	jmp poll
+preopismul:
+	push 3
+	push 5
+	ldi 5 0x0000
+	jmp poll
+preopisdiv:
+	push 3
+	push 5
+	ldi 5 0x0000
+	jmp poll
+clear:
+	ldi 5 0x0000
+	call display
+	jmp poll
+finalize:
+	pop 3
+	pop 2
+	ret
+number:
+	add 5 5 5
+	add 5 5 5
+	add 5 5 5
+	add 5 5 5
+	add 5 5 3
+	call display
+	jmp poll
+display:
+	push 1
+	ldi 1 0x0700
+	st 5 1
+	pop 1
+	ret

@@ -1,0 +1,228 @@
+.code
+main:
+	ldi 4 0x0000
+	ldi 5 0x0000
+	ldi 6 0x0000
+	ldi 7 0x02ff
+	call poll
+	ldi 0 0x000a
+	sub 1 2 0
+	jz perfaddition
+	inc 0
+	sub 1 2 0
+	jz perfsubtraction
+	inc 0
+	sub 1 2 0
+	jz perfmultiplication
+	inc 0
+	sub 1 2 0
+	jz perfdivision
+	jmp main
+perfaddition:
+	mov 5 6
+	call addition
+	call conversion
+	call display
+	jmp main
+perfsubtraction:
+	mov 5 6
+	call subtraction
+	call conversion
+	call display
+	jmp main
+perfmultiplication:
+	mov 5 6
+	call multiplication
+	call conversion
+	call display
+	jmp main
+perfdivision:
+	mov 5 6
+	call division
+	call conversion
+	call display
+	jmp main
+conversion:
+	ldi 1 0x0000
+	mov 6 5
+	mov 3 5
+	ldi 5 0x03e8
+	call division
+	mov 3 5
+	add 1 1 1
+	add 1 1 1 
+	add 1 1 1
+	add 1 1 1
+	add 1 1 3
+	ldi 5 0x03e8
+	ldi 4 0x0000
+	call multiplication
+	sub 6 6 5
+	mov 3 5
+	ldi 5 0x0064
+	call division
+	mov 3 5
+	add 1 1 1
+	add 1 1 1
+	add 1 1 1
+	add 1 1 1
+	add 1 1 3
+	ldi 5 0x0064
+	ldi 4 0x0000
+	call multiplication 
+	sub 6 6 5
+	mov 3 5
+	ldi 5 0x000a
+	call division
+	mov 3 5
+	add 1 1 1
+	add 1 1 1
+	add 1 1 1
+	add 1 1 1
+	add 1 1 3
+	ldi 5 0x000a
+	ldi 4 0x0000
+	call multiplication 
+	sub 6 6 5
+	mov 3 6
+	add 1 1 1
+	add 1 1 1
+	add 1 1 1
+	add 1 1 1
+	add 1 1 3
+	mov 5 1
+	ret
+addition:
+	add 5 3 5
+	ret
+subtraction:
+	sub 5 3 5
+	ret
+multiplication:
+	add 4 4 3
+	dec 5
+	jz mulres
+	jmp multiplication
+mulres:
+	mov 5 4
+	ret
+division:
+	ldi 4 0x0000
+divloop1:
+	mov 2 5
+divloop2:
+	ldi 0 0x0001
+	sub 2 2 0
+	jz divloop1cont
+	inc 4
+	sub 0 3 5
+	jz divreturn
+	dec 4
+	sub 0 3 2
+	jz divreturn
+	jmp divloop2
+divloop1cont:
+	sub 3 3 5
+	inc 4
+	jmp divloop1
+divreturn:
+	mov 5 4
+	ret
+poll:
+	ldi 0 0x0501
+	ld 1 0
+	ldi 2 0x0001
+	and 3 1 2
+	jz poll
+	dec 0
+	ld 3 0
+	ldi 1 0x000a
+	sub 1 1 3
+	jz preopisadd
+	ldi 1 0x000b
+	sub 1 1 3
+	jz preopissub
+	ldi 1 0x000c
+	sub 1 1 3
+	jz preopismul
+	ldi 1 0x000d
+	sub 1 1 3
+	jz preopisdiv
+	ldi 1 0x000e
+	sub 1 1 3
+	jz clear
+	ldi 1 0x000f
+	sub 1 1 3
+	jz finalize
+	jmp number
+preopisadd:
+	mov 3 6
+	push 3
+	ldi 1 0x000a
+	push 1
+	ldi 5 0x0000
+	ldi 6 0x0000
+	jmp poll
+preopissub:
+	mov 3 6
+	push 3
+	ldi 1 0x000b
+	push 1
+	ldi 5 0x0000
+	ldi 6 0x0000
+	jmp poll
+preopismul:
+	mov 3 6
+	push 3
+	ldi 1 0x000c
+	push 1
+	ldi 5 0x0000
+	ldi 6 0x0000
+	jmp poll
+preopisdiv:
+	mov 3 6
+	push 3
+	ldi 1 0x000d
+	push 1
+	ldi 5 0x0000
+	ldi 6 0x0000
+	jmp poll
+clear:
+	ldi 3 0x0000
+	ldi 5 0x0000
+	ldi 6 0x0000
+	call display
+	jmp poll
+finalize:
+	pop 2
+	pop 3
+	ret
+number:
+	push 4
+	ldi 4 0x0000
+	add 4 4 6
+	add 4 4 6
+	add 4 4 6
+	add 4 4 6
+	add 4 4 6
+	add 4 4 6
+	add 4 4 6
+	add 4 4 6
+	add 4 4 6
+	add 4 4 6
+	add 4 4 3
+	mov 6 4
+	pop 4
+	add 5 5 5
+	add 5 5 5
+	add 5 5 5
+	add 5 5 5
+	add 5 5 3
+	call display
+	jmp poll
+display:
+	push 1
+	ldi 1 0x0700
+	st 5 1
+	pop 1
+	ret
